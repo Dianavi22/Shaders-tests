@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ColorDamier
-  m_Shader: {fileID: 4800000, guid: 5abcf42dae8841545bfa62a9070bbf48, type: 3}
+  m_Name: ColorHex
+  m_Shader: {fileID: 4800000, guid: 7cea10efb6ad6d540ad1ae60ea84f6d6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -75,6 +75,7 @@ Material:
     - _GridThickness: 0
     - _Metallic: 0
     - _Mode: 0
+    - _NbCase: 0.2
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0

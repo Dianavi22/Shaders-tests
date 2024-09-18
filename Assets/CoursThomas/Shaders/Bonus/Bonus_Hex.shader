@@ -1,11 +1,9 @@
-Shader "Thomas/VerticalWavesShader"
+Shader "Thomas/Hex"
 {
-    Properties
+     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _LineWidth ("Line Width", FLOAT) = 0.05
-        _WaveAmplitude ("Wave Amplitude", FLOAT) = 0.1
-        _WaveFrequency ("Wave Frequency", FLOAT) = 5.0
+       
     }
     SubShader
     {
@@ -20,6 +18,7 @@ Shader "Thomas/VerticalWavesShader"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
+            #include "Assets/ShaderLibrary/Geometry.cginc"
 
             struct appdata
             {
@@ -36,26 +35,33 @@ Shader "Thomas/VerticalWavesShader"
 
             sampler2D _MainTex;
             float4 _MainTex_ST;
-            fixed _LineWidth;
-            fixed _WaveAmplitude;
-            fixed _WaveFrequency;
+            fixed _BorderSize;
+            fixed _NbCase;
+
 
             v2f vert (appdata v)
             {
-                v2f o;
+               v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
-                UNITY_TRANSFER_FOG(o, o.vertex);
+                UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
 
+      
             fixed4 frag (v2f i) : SV_Target
             {
-                float wave = sin(i.uv.y * _WaveFrequency) * _WaveAmplitude;
-                float uvX = frac(i.uv.x * 5 + wave);
-                fixed inLine = step(_LineWidth, uvX) * step(uvX, 1 - _LineWidth);
-                fixed4 col = float4(uvX, uvX, uvX, 1)
+                float2 pt = i.uv;
+             fixed4 col = lerp(fixed4(1,0,1,0), fixed4(1,1,1,1), HexaGrid(pt,0.08,10));
+             col*=lerp(col,fixed4(0,0,0.5,1), HexaGrid(pt, 0.03,10));
 
+             float2 squareSize = float2(1, sqrt(3)) / sqrt(3);
+             float2 center = squareSize/2;
+             float halfWidth = center.x;
+             float halfHeight = halfWidth/ sqrt(3);
+
+             float fr = frac(float2((pt.x*10)%(squareSize.x+0.025), pt.y*10));
+             col += lerp(col, fixed4(0,0,0.5,1), Hexagon(fr, center, halfWidth, halfWidth));
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }

@@ -1,12 +1,10 @@
-Shader "Unlit/ColorDegradeWithGridOverlay"
+Shader "Thomas/ColorSquareMosaik"
 {
-    Properties
+     Properties
     {
-        _BorderSize ("Border Size", FLOAT) = 0.05 
-        _GradientWidth ("Gradient Width", FLOAT) = 0.2 
-        _GridSize ("Grid Size", FLOAT) = 0.1  
-        _GridThickness ("Grid Thickness", FLOAT) = 0.02  
-        _GradientSteps ("Gradient Steps", FLOAT) = 5.0  
+        _MainTex ("Texture", 2D) = "white" {}
+        _BorderSize ("Border Size", FLOAT) = 0.2
+        _NbCase ("Nb Case", FLOAT) = 0.2
     }
     SubShader
     {
@@ -21,6 +19,7 @@ Shader "Unlit/ColorDegradeWithGridOverlay"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
+            #include "Assets/ShaderLibrary/Geometry.cginc"
 
             struct appdata
             {
@@ -35,59 +34,56 @@ Shader "Unlit/ColorDegradeWithGridOverlay"
                 float4 vertex : SV_POSITION;
             };
 
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
             fixed _BorderSize;
-            fixed _GradientWidth;
-            fixed _GridSize;
-            fixed _GridThickness;
-            fixed _GradientSteps;
+            fixed _NbCase;
+
 
             v2f vert (appdata v)
             {
-                v2f o;
+               v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
-                UNITY_TRANSFER_FOG(o, o.vertex);
+                UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
 
+       float roundTo(float x, float to){
+           return round(x*(1/to))/(1/to);
+           }
+
+           fixed4 pyramid(float2 pt, fixed4 color, float halfwidth, float2 center){
+                fixed4 black = fixed4(0,0,0,1);
+             fixed lineWidth = halfwidth/_NbCase;
+               fixed4 col = lerp(black, color*0.01, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth));
+              col = col + lerp(black, color*0.1, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth - lineWidth));
+              col = col + lerp(black, color*0.2, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth - lineWidth *2));
+              col = col + lerp(black, color*0.3, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth - lineWidth *3));
+              col = col + lerp(black, color*0.4, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth - lineWidth *4));
+              col = col + lerp(black, color*0.5, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth - lineWidth *5));
+              col = col + lerp(black, color*0.6, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth - lineWidth *6));
+              col = col + lerp(black, color*0.7, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth - lineWidth *7));
+              col = col + lerp(black, color*0.8, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth - lineWidth *8));
+              col = col + lerp(black, color*0.9, EmptySquare(GlobalToLocalPos(center,0,pt), lineWidth, halfwidth - lineWidth *9));
+              return col;
+               }
+           
+
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 uv = i.uv;
-
-                float isLeft = step(0.5, uv.x);  
-                float isBottom = step(0.5, uv.y);   
-
-                fixed4 color;
-                if (isLeft == 0 && isBottom == 0) color = fixed4(1, 0, 0, 1);
-                if (isLeft == 1 && isBottom == 0) color = fixed4(0, 1, 0, 1);  
-                if (isLeft == 0 && isBottom == 1) color = fixed4(0, 0, 1, 1); 
-                if (isLeft == 1 && isBottom == 1) color = fixed4(1, 1, 0, 1);  
-
-                float2 quadrantCenter = float2(0.25 + 0.5 * isLeft, 0.25 + 0.5 * isBottom);
-                float2 halfSize = float2(0.25 - _BorderSize, 0.25 - _BorderSize);  
-                float2 offset = abs(uv - quadrantCenter);
-                float2 borderDist = max(float2(0.0, 0.0), max(offset - halfSize, 0.0));
-
-                float gradientDist = max(max(0.0, offset.x - (halfSize.x - _GradientWidth)), offset.y - (halfSize.y - _GradientWidth));
-                float normalizedDist = gradientDist / _GradientWidth;
-                float stepSize = 1.0 / _GradientSteps;
-                float gradientValue = (1.0 - normalizedDist) * (1.0 - stepSize * floor(normalizedDist / stepSize));
-
-                fixed4 borderColor = fixed4(0, 0, 0, 1); 
-                fixed4 squareColor = lerp(color * gradientValue, borderColor, step(_BorderSize, borderDist.x) + step(_BorderSize, borderDist.y));
-
-                float2 grid = abs(frac(uv / _GridSize) - 0.5) * 2.0;
-                float gridLine = step(1.0 - _GridThickness, min(grid.x, grid.y));
-
-                fixed4 gridColor = fixed4(0, 0, 0, 1);
-
-                fixed4 gridBackgroundColor = fixed4(0, 0, 0, 0);
-
-                fixed4 finalColor = lerp(gridBackgroundColor, gridColor, gridLine);
-                finalColor = lerp(finalColor, squareColor, gridLine);
-
-                UNITY_APPLY_FOG(i.fogCoord, finalColor);
-                return finalColor;
+                float2 pt = i.uv;
+                float2 center= float2(0.5,0.5);
+                float halfwidth = 0.5;
+               fixed4 col = lerp(lerp(fixed4(0, 1, 0, 1), fixed4(1, 0, 1, 1), step(0.5, pt.y)), lerp(fixed4(1, 0, 0, 1), fixed4(0, 0, 1, 1), step(0.5, pt.y)), step(0.5, pt.x));
+                float2 centre = lerp(lerp(float2(0.25, 0.25), float2(0.25, 0.75), step(0.5, pt.y)), lerp(float2(0.75, 0.25), float2(0.75, 0.75), step(0.5, pt.y)), step(0.5, pt.x));
+              col = pyramid(pt, col, 0.25, centre);
+             
+                float2 fr = frac(pt*_NbCase*4);
+            
+              col = lerp(col, fixed4(0, 0, 0, 1), EmptySquare(GlobalToLocalPos(float2(0.5, 0.5), 0, fr), 0.02, halfwidth));
+                UNITY_APPLY_FOG(i.fogCoord, col);
+                return col;
             }
             ENDCG
         }

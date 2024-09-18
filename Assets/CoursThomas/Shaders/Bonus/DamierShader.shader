@@ -1,9 +1,9 @@
-Shader "Unlit/Checkerboard"
+Shader "Thomas/DamierColor"
 {
     Properties
     {
-        _CheckerSize ("Checker Size", FLOAT) = 0.2  // Taille des cases du damier
-        _GridThickness ("Grid Thickness", FLOAT) = 0.02  // Épaisseur des lignes de la grille
+        _CheckerSize ("Checker Size", FLOAT) = 0.2
+        _GridThickness ("Grid Thickness", FLOAT) = 0.02
     }
     SubShader
     {
@@ -44,27 +44,29 @@ Shader "Unlit/Checkerboard"
                 return o;
             }
 
+            fixed4 RandomColor(float2 uv)
+            {
+                float2 scaledUV = floor(uv / 4.0); 
+                float r = frac(sin(dot(scaledUV, float2(12.9898, 78.233))) * 43758.5453);
+                float g = frac(sin(dot(scaledUV, float2(93.9898, 67.345))) * 23421.6312);
+                float b = frac(sin(dot(scaledUV, float2(45.123, 98.765))) * 12345.6789);
+                return fixed4(r, g, b, 1.0);
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
                 float2 uv = i.uv;
-
-                // Calculer les coordonnées du damier
                 float2 uvChecker = floor(uv / _CheckerSize);
                 float isEven = fmod(uvChecker.x + uvChecker.y, 2.0);
 
-                // Définir les couleurs pour le damier
-                fixed4 color1 = fixed4(1, 1, 1, 1); // Blanc
-                fixed4 color2 = fixed4(0, 0, 0, 1); // Noir
+                fixed4 color1 = fixed4(1, 1, 1, 1);
+                fixed4 color2 = RandomColor(uvChecker);
                 fixed4 color = lerp(color1, color2, isEven);
 
-                // Calculer la grille
                 float2 grid = abs(frac(uv / _CheckerSize) - 0.5) * 2.0;
                 float gridLine = step(1.0 - _GridThickness / _CheckerSize, min(grid.x, grid.y));
 
-                // Couleur de la grille
-                fixed4 gridColor = fixed4(0, 0, 0, 1); // Noir
-
-                // Combiner la couleur du damier et la couleur de la grille
+                fixed4 gridColor = fixed4(0, 0, 0, 1);
                 fixed4 finalColor = lerp(color, gridColor, gridLine);
 
                 UNITY_APPLY_FOG(i.fogCoord, finalColor);
