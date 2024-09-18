@@ -1,4 +1,4 @@
-Shader "Unlit/VerticalWavesShader"
+Shader "Thomas/VerticalWavesShader"
 {
     Properties
     {

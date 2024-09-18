@@ -1,4 +1,4 @@
-Shader "Unlit/SquareShaderCad"
+Shader "Thomas/CadSpine"
 {
     Properties
     {

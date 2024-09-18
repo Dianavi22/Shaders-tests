@@ -1,4 +1,4 @@
-Shader "Patterns/Bricks"
+Shader "Thomas/Bricks"
 {
     Properties
     {

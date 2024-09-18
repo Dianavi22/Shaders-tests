@@ -1,4 +1,4 @@
-﻿﻿Shader "Skybox/Gradient Skybox"
+﻿﻿Shader "Thomas/Gradient Skybox"
 {
     Properties
     {

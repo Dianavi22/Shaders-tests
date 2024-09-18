@@ -1,4 +1,4 @@
-Shader "Unlit/CircleShader"
+Shader "Thomas/CircleShader"
 {
     Properties
     {

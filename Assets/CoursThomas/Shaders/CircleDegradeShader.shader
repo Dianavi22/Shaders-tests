@@ -1,12 +1,8 @@
-Shader "Unlit/CircleShader"
+Shader "Thomas/CircleDegradeShader"
 {
     Properties
     {
-      //  _MainTex ("Texture", 2D) = "white" {}
       _Radius("Radius", FLOAT) = 0.2
-       //_Color1 ("Top Color", Color) = (1, 1, 1, 0)
-       // _Color2 ("Bottom Color", Color) = (1, 1, 1, 0)
-       //  _Intensity ("Intensity Amplifier", Float) = 1.0
     }
     SubShader
     {
@@ -34,8 +30,6 @@ Shader "Unlit/CircleShader"
                 float4 vertex : SV_POSITION;
             };
 
-            //sampler2D _MainTex;
-            //float4 _MainTex_ST;
             fixed _Radius;
             fixed _Color;
 

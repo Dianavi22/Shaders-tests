@@ -1,4 +1,4 @@
-Shader "Patterns/RandomGlitch"
+Shader "Thomas/RandomGlitch"
 {
     Properties
     {

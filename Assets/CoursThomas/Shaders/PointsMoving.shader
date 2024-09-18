@@ -1,4 +1,4 @@
-Shader "Patterns/Dots"
+Shader "Thomas/PointsMoving"
 {
     Properties
     {

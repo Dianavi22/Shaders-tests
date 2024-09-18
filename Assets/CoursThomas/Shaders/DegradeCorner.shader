@@ -1,4 +1,4 @@
-Shader "Unlit/SquareShaderCadCircle"
+Shader "Thomas/DegradeCorner"
 {
     Properties
     {
@@ -47,9 +47,9 @@ Shader "Unlit/SquareShaderCadCircle"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 remappedUVs = abs((i.uv*2) - 1);
+                float2 remappedUVs = abs((i.uv*2) -1 );
                 fixed2 center = fixed2(0.5,0.5);
-                fixed dist = distance(center, remappedUVs);
+                fixed dist = distance(center, min(center, remappedUVs));
                 dist = frac(dist*10);
 
                 fixed4 col = fixed4(dist,dist,dist,1);

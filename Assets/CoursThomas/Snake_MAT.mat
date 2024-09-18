@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Glitch
-  m_Shader: {fileID: 4800000, guid: 6cf0c57bc2852fc4e969cdbf601a1f6a, type: 3}
+  m_Name: Snake_MAT
+  m_Shader: {fileID: 4800000, guid: cd13b17cbfb6ee44982947e981721bd7, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -69,19 +69,20 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _LineWidth: 0.2
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Radius: 0.2
     - _RotationSpeed: 1
-    - _Size: 10
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SquareSize: 0.5
     - _SrcBlend: 1
-    - _Threshold: 0.85
     - _UVSec: 0
+    - _WaveAmplitude: 0.43
+    - _WaveFrequency: 18.83
     - _ZWrite: 1
     m_Colors:
     - _AnimateXY: {r: 1, g: -1, b: 0, a: 0}

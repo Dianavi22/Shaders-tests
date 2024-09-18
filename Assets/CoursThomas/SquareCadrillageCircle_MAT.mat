@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Square
-  m_Shader: {fileID: 4800000, guid: b4c803a06c6c1c74d97f4caccb1d645b, type: 3}
+  m_Name: SquareCadrillageCircle_MAT
+  m_Shader: {fileID: 4800000, guid: 6d930ba48ddc4154abb88e5d198d5319, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -61,6 +61,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _BorderSize: 0.21
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -72,13 +73,18 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _Radius: 0.34
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
+    - _SquareSize: 0.5
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
+    - _AnimateXY: {r: 0, g: 0, b: 0, a: 0}
+    - _BackgroundColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SquareColor: {r: 1, g: 0, b: 0, a: 1}
     - framesize: {r: 0.5, g: 0.5, b: 0, a: 0}
   m_BuildTextureStacks: []

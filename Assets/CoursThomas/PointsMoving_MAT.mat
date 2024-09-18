@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SquareCadrillageCircle
-  m_Shader: {fileID: 4800000, guid: 6d930ba48ddc4154abb88e5d198d5319, type: 3}
+  m_Name: PointsMoving_MAT
+  m_Shader: {fileID: 4800000, guid: f43b8db7c71af184fa93b7b867959e8d, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -61,7 +61,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BorderSize: 0.21
+    - _BorderSize: 0.05
+    - _BoxSize: 0.08
+    - _BriqueHeight: 0.06
+    - _BriqueWidth: 0.2
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -69,11 +72,11 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _GridSize: 14.69
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Radius: 0.34
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SquareSize: 0.5

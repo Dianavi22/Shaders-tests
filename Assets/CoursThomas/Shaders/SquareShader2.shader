@@ -1,4 +1,4 @@
-Shader "Unlit/Square2"
+Shader "Thomas/Square"
 {
     Properties
     {
