@@ -1,4 +1,4 @@
-Shader "Unlit/Triangle"
+Shader "Bonus Shaders/Triangle"
 {
     Properties
     {

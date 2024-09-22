@@ -1,4 +1,4 @@
-Shader "Thomas/ColorSquareMosaik"
+Shader "Bonus Shaders/ColorSquareMosaik"
 {
      Properties
     {
@@ -19,7 +19,6 @@ Shader "Thomas/ColorSquareMosaik"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "Assets/ShaderLibrary/Geometry.cginc"
 
             struct appdata
             {
@@ -47,6 +46,22 @@ Shader "Thomas/ColorSquareMosaik"
                 o.uv = v.uv;
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
+            }
+
+            fixed Square(float2 halfSize, float2 pt) {
+             return smoothstep(-halfSize.x, -halfSize.x, pt.x) * (1 - smoothstep(halfSize.x, halfSize.x, pt.x)) * smoothstep(-halfSize.y, -halfSize.y, pt.y) * (1 - smoothstep(halfSize.y, halfSize.y, pt.y));
+             }
+
+            fixed EmptySquare(float2 pt, float borderSize, float halfWidth){
+            return Square(halfWidth, pt) * (1 - Square(halfWidth - borderSize, pt));
+            }
+
+            float2 GlobalToLocalPos(float2 refPos, float refAngle, float2 globalPos) {
+            float2 globalVect = globalPos - refPos;
+            float2 localI = float2(cos(refAngle), sin(refAngle));
+            float2 localJ = float2(-localI.y, localI.x); 
+
+            return float2(dot(globalVect, localI), dot(globalVect, localJ));
             }
 
        float roundTo(float x, float to){

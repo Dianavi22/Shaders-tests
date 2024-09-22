@@ -1,4 +1,4 @@
-Shader "Unlit/ColoredRepeatedSquareAndCircle"
+Shader "Bonus Shaders/ColorSquaresAndCircles"
 {
     Properties
     {

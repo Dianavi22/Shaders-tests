@@ -1,4 +1,4 @@
-Shader "Thomas/DamierColor"
+Shader "Bonus Shaders/DamierColor"
 {
     Properties
     {
