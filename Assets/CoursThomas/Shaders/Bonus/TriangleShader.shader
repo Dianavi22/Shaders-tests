@@ -1,10 +1,9 @@
-Shader "Custom/StripesShader"
+Shader "Unlit/Triangle"
 {
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _BorderSize ("Border Size", float) = 0.2
-        _NbRep ("Nombre rep", int) = 1 
+        _BorderSize ("Border Size", FLOAT) = 0.2
     }
     SubShader
     {
@@ -19,7 +18,6 @@ Shader "Custom/StripesShader"
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
-            #include "Assets/ShaderLibrary/Geometry.cginc"
 
             struct appdata
             {
@@ -37,7 +35,6 @@ Shader "Custom/StripesShader"
             sampler2D _MainTex;
             float4 _MainTex_ST;
             fixed _BorderSize;
-            int _NbRep;
 
             v2f vert (appdata v)
             {
@@ -48,22 +45,20 @@ Shader "Custom/StripesShader"
                 return o;
             }
 
-            float2 Rotatepoint(float angle, float2 uv){
-                float2 pt = mul(float2x2(cos(angle), -sin(angle), sin(angle), cos(angle)), uv);
-                return pt;
-             }
-
             fixed4 frag (v2f i) : SV_Target
             {
-               float2 rotatedUV = Rotatepoint(radians(-45), i.uv);
-               float2 repeatPt = frac(rotatedUV * _NbRep);
-               float center = float2(0.5, 0.5);
-               float2 pt = GlobalToLocalPos(center, 0, repeatPt);
-               float condition = EmptySquare(pt, _BorderSize / 2, 0.5) + EmptySquare(repeatPt, _BorderSize, 0.7) + EmptySquare(repeatPt, _BorderSize, 0.4);
-               fixed4 col = lerp(fixed4(1, 1, 1, 1), fixed4(0, 0, 0, 1), condition);
 
-               UNITY_APPLY_FOG(i.fogCoord, col);
-               return col;
+                fixed2 sizeVec = fixed2(_BorderSize,_BorderSize);
+
+                fixed2 bottumLeft = step(sizeVec, i.uv);
+                fixed inSquare = bottumLeft.x * bottumLeft.y;
+
+                fixed2 topRight = step(sizeVec,1-i.uv);
+                inSquare *= topRight.x * topRight.y;
+
+                fixed4 col = fixed4(inSquare,inSquare,inSquare,1);
+                UNITY_APPLY_FOG(i.fogCoord, col);
+                return col;
             }
             ENDCG
         }

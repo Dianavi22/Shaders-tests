@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MiSquare
-  m_Shader: {fileID: 4800000, guid: 0eadb0398473f3a4c9624336c7d7ff64, type: 3}
+  m_Name: Triangle
+  m_Shader: {fileID: 4800000, guid: 312dd663bfe5eb840b035a5c1ae6cc33, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -61,62 +61,50 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _BorderSize: 0.07
-    - _BorderThickness: 0
+    - _BandHeight: -252.64
+    - _BaseTriangleSize: -0.11
+    - _BorderSize: -0.04
     - _BumpScale: 1
     - _CheckerSize: 0.05
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DiamondSize: -0.34
     - _DstBlend: 0
-    - _DuplicateCount: 4.42
-    - _ExtraSquareSize: 0.276
-    - _FinalSquareSize: 0.465
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _GradientSteps: 5
     - _GradientWidth: 0.1
     - _GridThickness: 0
-    - _InnerInnerInnerInnerSquareSize: 0.153
-    - _InnerInnerInnerSquareSize: 0.081
-    - _InnerInnerSquareSize: 0
-    - _InnerSquareSize: 1
-    - _LineThickness: 0.31
+    - _LineSpacing: 0.38
     - _Metallic: 0
+    - _MiddleThreshold: 0.05
     - _Mode: 0
-    - _NbRep: 3
+    - _NumRows: 20
     - _OcclusionStrength: 1
-    - _Offset: 0.1
-    - _OffsetX: 0.051
-    - _OffsetY: 0.009
-    - _OuterSquareSize: 0.765
     - _Parallax: 0.02
-    - _RepeatX: 2
-    - _RepeatY: 1.85
-    - _RotationSpeed: 1
-    - _Size: 0.5
+    - _Scale: 0.99
+    - _ScaleFactor: 0.2
     - _SmoothnessTextureChannel: 0
+    - _Spacing: 2.28
     - _SpecularHighlights: 1
-    - _Square1Size: 0.902
-    - _Square2Size: 0.843
-    - _Square3Size: 0
-    - _Square4Size: 0.132
-    - _Square5Size: 0.398
-    - _Square6Size: 0.53
-    - _SquareCount: 2.72
-    - _SquareOffset: 0.5
-    - _SquareSize: 0.876
     - _SrcBlend: 1
-    - _StripeWidth: 0.1
-    - _Tiling: 1.15
+    - _TriangleSize: -0.14
+    - _TriangleSize1: 0.4
+    - _TriangleSize2: 0.4
+    - _TriangleSize3: 0.4
+    - _TriangleSize4: 0.4
+    - _TriangleSizeMiddle: 0.29
     - _UVSec: 0
-    - _VerticalOffset: 0.021
-    - _YellowSquareOffset: 0.153
     - _ZWrite: 1
     m_Colors:
     - _BackgroundColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BandColor: {r: 0, g: 0, b: 0, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _LineColor: {r: 0, g: 0, b: 0, a: 1}
+    - _TriangleColor: {r: 0, g: 0, b: 0, a: 1}
+    - _TriangleColor1: {r: 0, g: 0, b: 0, a: 1}
+    - _TriangleColor2: {r: 0, g: 0, b: 0, a: 1}
+    - _TriangleColor3: {r: 0, g: 0, b: 0, a: 1}
+    - _TriangleColor4: {r: 0, g: 0, b: 0, a: 1}
+    - _TriangleColorMiddle: {r: 1, g: 0, b: 0, a: 1}
   m_BuildTextureStacks: []
