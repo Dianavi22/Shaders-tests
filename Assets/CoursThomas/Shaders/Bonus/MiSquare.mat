@@ -85,7 +85,7 @@ Material:
     - _LineThickness: 0.31
     - _Metallic: 0
     - _Mode: 0
-    - _NbRep: 3
+    - _NbRep: 5
     - _OcclusionStrength: 1
     - _Offset: 0.1
     - _OffsetX: 0.051

@@ -45,20 +45,73 @@ Shader "Unlit/Triangle"
                 return o;
             }
 
+            float sign (float2 p1, float2 p2, float2 p3) {
+                return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
+            }
+
+            float PointInTriangle (float2 pt, float2 v1, float2 v2, float2 v3)
+            {
+                float d1 = sign(pt, v1, v2);
+                float d2 = sign(pt, v2, v3);
+                float d3 = sign(pt, v3, v1);
+
+                float has_neg = (d1 < 0) + (d2 < 0) + (d3 < 0);
+                float has_pos = (d1 > 0) + (d2 > 0) + (d3 > 0);
+
+                return 1 - (has_neg * has_pos);
+            }
+
+            fixed4 blackWhiteLerp(float condition) {
+                return lerp(fixed4(0, 0, 0, 1), fixed4(1, 1, 1, 1), condition);
+            }
+
+            float BottomTriangleCondition(float2 pt, float width) {
+                float2 topLeft = float2(width, 1 - width / 2);
+                float2 topRight = float2(1 - width, 1 - width / 2);
+                float2 center = float2(0.5, width / 2);
+
+                float2 topLeftBottom = float2(0, 1 - width / 2);
+                float2 bottomLeft = float2(0, width / 2);
+                float2 centerLeft = float2(0.5 - width, width / 2);
+
+                float2 topRightBottom = float2(1, 1 - width / 2);
+                float2 bottomRight = float2(1, width / 2);
+                float2 centerRight = float2(0.5 + width, width / 2);
+
+                return 1 - (PointInTriangle(pt, topLeft, center, topRight)
+                    * PointInTriangle(pt, topLeftBottom, centerLeft, bottomLeft)
+                    * PointInTriangle(pt, topRightBottom, bottomRight, centerRight));
+            }
+
+            float TopTriangleCondition(float2 pt, float width) {
+                float2 topCenter = float2(0.5, 1 - width / 2);
+                float2 centerBottomLeft = float2(width, width / 2);
+                float2 centerBottomRight = float2(1 - width, width / 2);
+
+                float2 topLeft = float2(0, 1 - width / 2);
+                float2 bottomLeft = float2(0, width / 2);
+                float2 topCenterLeft = float2(0.5 - width, 1 - width / 2);
+
+                float2 topRight = float2(1, 1 - width / 2);
+                float2 bottomRight = float2(1, width / 2);
+                float2 topCenterRight = float2(0.5 + width, 1 - width / 2);
+
+                return 1 - (PointInTriangle(pt, topCenter, centerBottomLeft, centerBottomRight)
+                    * PointInTriangle(pt, topLeft, topCenterLeft, bottomLeft)
+                    * PointInTriangle(pt, topRight, bottomRight, topCenterRight));
+            }
+
             fixed4 frag (v2f i) : SV_Target
             {
+                float2 multipliedUv = i.uv * 10;
+            
+                float width = lerp(0.1, 0.4, abs(0.5 - i.uv.y));
+                float isOdd = step(1, multipliedUv.y % 2); // Checking if odd
 
-                fixed2 sizeVec = fixed2(_BorderSize,_BorderSize);
+                float2 pt = frac(multipliedUv);
+                float condition = lerp(BottomTriangleCondition(pt, width), TopTriangleCondition(pt, width), isOdd);
 
-                fixed2 bottumLeft = step(sizeVec, i.uv);
-                fixed inSquare = bottumLeft.x * bottumLeft.y;
-
-                fixed2 topRight = step(sizeVec,1-i.uv);
-                inSquare *= topRight.x * topRight.y;
-
-                fixed4 col = fixed4(inSquare,inSquare,inSquare,1);
-                UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                return blackWhiteLerp(condition);
             }
             ENDCG
         }

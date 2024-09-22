@@ -63,7 +63,7 @@ Material:
     m_Floats:
     - _BandHeight: -252.64
     - _BaseTriangleSize: -0.11
-    - _BorderSize: -0.04
+    - _BorderSize: 0.05
     - _BumpScale: 1
     - _CheckerSize: 0.05
     - _Cutoff: 0.5
