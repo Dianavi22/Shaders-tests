@@ -41,10 +41,10 @@ Shader "Bonus Shaders/SquareConcentrics"
             v2f vert (appdata v)
             {
                v2f o;
-                o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = v.uv;
-                UNITY_TRANSFER_FOG(o,o.vertex);
-                return o;
+               o.vertex = UnityObjectToClipPos(v.vertex);
+               o.uv = v.uv;
+               UNITY_TRANSFER_FOG(o, o.vertex);
+               return o;
             }
 
             float2 Rotatepoint(float angle, float2 uv){
@@ -52,34 +52,47 @@ Shader "Bonus Shaders/SquareConcentrics"
                 return pt;
              }
 
-             fixed Square(float2 halfSize, float2 pt) {
-             return smoothstep(-halfSize.x, -halfSize.x, pt.x) * (1 - smoothstep(halfSize.x, halfSize.x, pt.x)) * smoothstep(-halfSize.y, -halfSize.y, pt.y) * (1 - smoothstep(halfSize.y, halfSize.y, pt.y));
-             }
+            fixed Square(float2 halfSize, float2 pt) {
+                return smoothstep(-halfSize.x, -halfSize.x, pt.x) * (1 - smoothstep(halfSize.x, halfSize.x, pt.x)) * smoothstep(-halfSize.y, -halfSize.y, pt.y) * (1 - smoothstep(halfSize.y, halfSize.y, pt.y));
+            }
 
             fixed EmptySquare(float2 pt, float borderSize, float halfWidth){
-            return Square(halfWidth, pt) * (1 - Square(halfWidth - borderSize, pt));
+                return Square(halfWidth, pt) * (1 - Square(halfWidth - borderSize, pt));
             }
 
             float2 GlobalToLocalPos(float2 refPos, float refAngle, float2 globalPos) {
-            float2 globalVect = globalPos - refPos;
-            float2 localI = float2(cos(refAngle), sin(refAngle));
-            float2 localJ = float2(-localI.y, localI.x); 
+                float2 globalVect = globalPos - refPos;
+                float2 localI = float2(cos(refAngle), sin(refAngle));
+                float2 localJ = float2(-localI.y, localI.x); 
 
-            return float2(dot(globalVect, localI), dot(globalVect, localJ));
+                return float2(dot(globalVect, localI), dot(globalVect, localJ));
+            }
+
+            // Nouvelle fonction pour encapsuler le calcul de la couleur
+            fixed4 CalculateColor(float2 uv, float borderSize, int nbRep)
+            {
+                float2 rotatedUV = Rotatepoint(radians(-45), uv);
+                float2 repeatPt = frac(rotatedUV * nbRep);
+                float2 center = float2(0.5, 0.5);
+                float2 pt = GlobalToLocalPos(center, 0, repeatPt);
+
+                float condition = EmptySquare(pt, borderSize / 2, 0.5) + 
+                                  EmptySquare(repeatPt, borderSize, 0.7) + 
+                                  EmptySquare(repeatPt, borderSize, 0.4);
+
+                fixed4 col = lerp(fixed4(1, 1, 1, 1), fixed4(0, 0, 0, 1), condition);
+                return col;
             }
 
             fixed4 frag (v2f i) : SV_Target
             {
-               float2 rotatedUV = Rotatepoint(radians(-45), i.uv);
-               float2 repeatPt = frac(rotatedUV * _NbRep);
-               float center = float2(0.5, 0.5);
-               float2 pt = GlobalToLocalPos(center, 0, repeatPt);
-               float condition = EmptySquare(pt, _BorderSize / 2, 0.5) + EmptySquare(repeatPt, _BorderSize, 0.7) + EmptySquare(repeatPt, _BorderSize, 0.4);
-               fixed4 col = lerp(fixed4(1, 1, 1, 1), fixed4(0, 0, 0, 1), condition);
+                // Utilisation de la nouvelle fonction CalculateColor
+                fixed4 col = CalculateColor(i.uv, _BorderSize, _NbRep);
 
-               UNITY_APPLY_FOG(i.fogCoord, col);
-               return col;
+                UNITY_APPLY_FOG(i.fogCoord, col);
+                return col;
             }
+
             ENDCG
         }
     }
